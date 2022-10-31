@@ -77,9 +77,10 @@ func ResourceIPFirewallFilter() *schema.Resource {
 			Type:        schema.TypeString,
 			Optional:    true,
 			Description: "Interprets the connection tracking analysis data for a particular packet.",
-			ValidateFunc: validation.StringInSlice([]string{
-				"estabilished", "invalid", "new", "related", "untracked",
-			}, false),
+			ValidateFunc: validation.StringMatch(regexp.MustCompile(
+				"^((established|invalid|new|related|untracked),?)+$"),
+				"Value must be any of established, invalid, new, related, untracked, or a comma-separated "+
+					"list of those"),
 		},
 		"connection_type": {
 			Type:     schema.TypeString,
@@ -140,6 +141,11 @@ func ResourceIPFirewallFilter() *schema.Resource {
 			Optional:     true,
 			Description:  "Matches packets received from HotSpot clients against various HotSpot matchers.",
 			ValidateFunc: validation.StringInSlice([]string{"auth", "from-client", "http", "local-dst", "to-client"}, false),
+		},
+		"hw_offload": {
+			Type:        schema.TypeBool,
+			Computed:    true,
+			Description: "Whether or not rule is hardware offloaded",
 		},
 		"icmp_options": {
 			Type:        schema.TypeString,
