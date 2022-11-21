@@ -1,6 +1,6 @@
 module github.com/vaerh/terraform-provider-routeros
 
-go 1.17
+go 1.19
 
 require (
 	github.com/fatih/color v1.13.0
